@@ -209,7 +209,7 @@ public class Calculator extends JFrame{
                             numDis *= -1;
                             displayLabel.setText(removeZeroDecimal(numDis));
                         }
-                        else if ("012345678".contains(buttonValue)) {
+                        else if ("0123456789".contains(buttonValue)) {
                             if (displayLabel.getText().equals("0")) {
                                 displayLabel.setText(buttonValue);
                             }
@@ -271,3 +271,4 @@ public class Calculator extends JFrame{
         return Double.toString(num);
     }
 }
+
