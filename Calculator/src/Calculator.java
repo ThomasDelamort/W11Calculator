@@ -1,18 +1,18 @@
+import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.text.DecimalFormat;
 import java.util.Arrays;
-import javax.swing.border.*;
-import java.math.*;
 
-public class Calculator extends JFrame{
+public class Calculator extends JFrame {
 
     Color customBlack = new Color(32, 32, 32);
     Color customWhite = new Color(255, 255, 255);
     Color customGrey = new Color(50, 50, 50);
     Color customLightGrey = new Color(59, 59, 59);
     Color purple = new Color(219, 158, 229);
+    Color hoverPurple = new Color(205, 145, 218);
 
     // Button Arrays
     String[] buttonValues = {
@@ -56,6 +56,7 @@ public class Calculator extends JFrame{
     String B = null;
 
     public Calculator() {
+
         setSize(boardWidth, boardHeight);
         setLayout(new BorderLayout());
         setTitle("Calculator");
@@ -130,9 +131,11 @@ public class Calculator extends JFrame{
                     customWhite,
                     rightButtons,
                     customGrey,
-                    purple
+                    purple,
+                    hoverPurple
             );
             buttonsPanel.add(buttons);
+
             buttons.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -225,7 +228,7 @@ public class Calculator extends JFrame{
         setVisible(true);
     }
 
-    private static JButton getJButton(
+    private static @NotNull JButton getJButton(
             String value,
             Color customBlack,
             String[] topButtons,
@@ -233,7 +236,8 @@ public class Calculator extends JFrame{
             Color customWhite,
             String[] rightButtons,
             Color customGrey,
-            Color purple
+            Color purple,
+            Color hoverPurple
     )
     {
         JButton button = new JButton();
@@ -257,8 +261,41 @@ public class Calculator extends JFrame{
             button.setBackground(customLightGrey);
             button.setForeground(customWhite);
         }
+
+        // Buttons Hover Effects
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (Arrays.asList(topButtons).contains(value)) {
+                    button.setBackground(customLightGrey);
+                }  else if (Arrays.asList(rightButtons).contains(value)) {
+                    if ("=".contains(value)) {
+                        button.setBackground(hoverPurple);
+                    } else {
+                        button.setBackground(customLightGrey);
+                    }
+                } else {
+                    button.setBackground(customGrey);
+                }
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (Arrays.asList(topButtons).contains(value)) {
+                    button.setBackground(customGrey);
+                } else if (Arrays.asList(rightButtons).contains(value)) {
+                    if ("=".contains(value)) {
+                        button.setBackground(purple);
+                    } else {
+                        button.setBackground(customGrey);
+                    }
+                } else {
+                    button.setBackground(customLightGrey);
+                }
+            }
+        });
         return button;
     }
+
     public void clearAll() {
         A = "0";
         operator = null;
@@ -271,4 +308,3 @@ public class Calculator extends JFrame{
         return Double.toString(num);
     }
 }
-
